@@ -1,7 +1,9 @@
-#include <iostream>
-#include <msqlitecpp/sqlitestorage.h>
+#include <sqlitestorage.h>
+
+#include <memory>
 
 int main() {
-    sqlite::sqlitestorage s(":memory:");
+    auto db1 = std::make_shared<sqlite::SQLiteStorage>(":memory:");
+    db1->open();
     return 0;
 }

@@ -32,13 +32,17 @@ class MsqlitecppConan(ConanFile):
             os.chdir("..")
         os.unlink(zip_name)
 
-    def build(self):
+    def configure_cmake(self):
         cmake = CMake(self)
         d = {"WITH_CONAN": "ON",
              "ENABLE_TEST": "OFF",
              "ENABLE_PROFILER": "OFF",
              "ENABLE_SQLITE_AMALGAMATION": "ON"}
         cmake.configure(source_folder="mSqliteCpp", defs=d)
+        return cmake
+
+    def build(self):
+        cmake = self.configure_cmake()
         cmake.build()
 
         # Explicit way:
@@ -47,12 +51,16 @@ class MsqlitecppConan(ConanFile):
         # self.run("cmake --build . %s" % cmake.build_config)
 
     def package(self):
-        self.copy("*.h", dst="include", src="hello")
+        cmake = self.configure_cmake()
+        cmake.install()
+        """
+        self.copy("*.h", dst="include", src="include")
         self.copy("*msqlitecpp.lib", dst="lib", keep_path=False)
         self.copy("*.dll", dst="bin", keep_path=False)
         self.copy("*.so", dst="lib", keep_path=False)
         self.copy("*.dylib", dst="lib", keep_path=False)
         self.copy("*.a", dst="lib", keep_path=False)
+        """
 
     def package_info(self):
         self.cpp_info.libs = ["mSqliteCpp"]
