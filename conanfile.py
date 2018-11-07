@@ -63,5 +63,5 @@ class MsqlitecppConan(ConanFile):
         """
 
     def package_info(self):
-        self.cpp_info.libs = ["mSqliteCpp"]
+        self.cpp_info.libs = ["msqlitecpp"]
 
